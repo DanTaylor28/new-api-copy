@@ -3,7 +3,7 @@ from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Profile
 from .serializers import ProfileSerializer
-# from drf_api.permissions import IsOwnerOrReadOnly
+from drf_api.permissions import IsOwnerOrReadOnly
 from rest_framework import generics, filters
 
 
@@ -54,7 +54,7 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
     and delete the profile if you are the owner
     """
     serializer_class = ProfileSerializer
-    # permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
     # queryset = Profile.objects.annotate(
     #     num_of_posts=Count('owner__post', distinct=True),
     #     num_of_followers=Count('owner__followed', distinct=True),
