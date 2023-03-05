@@ -1,6 +1,6 @@
 from django.shortcuts import render
-# from django.db.models import Count
-# from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
 from .serializers import PostSerializer
 from drf_api.permissions import IsOwnerOrReadOnly
@@ -14,38 +14,37 @@ class PostListView(generics.ListCreateAPIView):
     filtered, searched and ordered by numerous options.
     """
     serializer_class = PostSerializer
-    # queryset = Post.objects.annotate(
-    #     num_of_pins=Count('pins', distinct=True),
-    #     num_of_comments=Count('comment', distinct=True)
-    # ).order_by('-uploaded_at')
-    queryset = Post.objects.all()
+    queryset = Post.objects.annotate(
+        num_of_pins=Count('pins', distinct=True),
+        num_of_comments=Count('comment', distinct=True)
+    ).order_by('-uploaded_at')
 
-    # filter_backends = [
-    #     filters.SearchFilter,
-    #     filters.OrderingFilter,
-    #     DjangoFilterBackend
-    # ]
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    ]
 
-    # search_fields = [
-    #     'title',
-    #     'category__name',
-    #     'owner__username',
-    #     'owner__profile__name'
-    # ]
+    search_fields = [
+        'title',
+        'category__name',
+        'owner__username',
+        'owner__profile__name'
+    ]
 
-    # ordering_fields = [
-    #     'num_of_pins',
-    #     'num_of_comments'
-    # ]
+    ordering_fields = [
+        'num_of_pins',
+        'num_of_comments'
+    ]
 
-    # filterset_fields = [
-    #     'owner__profile',
-    #     'category__name',
-    #     # will show posts from users the selected user is following
-    #     'owner__followed__owner__profile',
-    #     # will show posts the selected user has pinned
-    #     'pins__owner__profile'
-    # ]
+    filterset_fields = [
+        'owner__profile',
+        'category__name',
+        # will show posts from users the selected user is following
+        'owner__followed__owner__profile',
+        # will show posts the selected user has pinned
+        'pins__owner__profile'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -58,8 +57,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    # queryset = Post.objects.annotate(
-    #     num_of_pins=Count('pins', distinct=True),
-    #     num_of_comments=Count('comment', distinct=True)
-    # ).order_by('-uploaded_at')
-    queryset = Post.objects.all()
+    queryset = Post.objects.annotate(
+        num_of_pins=Count('pins', distinct=True),
+        num_of_comments=Count('comment', distinct=True)
+    ).order_by('-uploaded_at')
