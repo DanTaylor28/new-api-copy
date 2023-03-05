@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
         source='owner.profile.profile_image.url')
     is_post_owner = serializers.SerializerMethodField()
     # pinned_id = serializers.SerializerMethodField()
-    # category_name = serializers.ReadOnlyField(source='category.name')
+    category_name = serializers.ReadOnlyField(source='category.name')
     # num_of_pins = serializers.ReadOnlyField()
     # num_of_comments = serializers.ReadOnlyField()
     updated_at = serializers.SerializerMethodField()
@@ -57,7 +57,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             'id', 'title', 'caption', 'owner', 'is_post_owner',
-            #  'category', 'category_name',
+            'category', 'category_name',
             'uploaded_at', 'updated_at',
             'post_image', 'profile_id', 'profile_image',  # 'pinned_id',
             # 'num_of_pins', 'num_of_comments'
