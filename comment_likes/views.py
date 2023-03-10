@@ -1,5 +1,5 @@
 from django.shortcuts import render
-# from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import CommentLike
 from .serializers import CommentLikeSerializer
 from rest_framework import generics
@@ -15,9 +15,9 @@ class CommentLikeListView(generics.ListCreateAPIView):
     serializer_class = CommentLikeSerializer
     queryset = CommentLike.objects.all().order_by('-timestamp')
 
-    # filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend]
 
-    # filterset_fields = ['comment']
+    filterset_fields = ['comment']
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-# from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Pin
 from .serializers import PinSerializer
 from drf_api.permissions import IsOwnerOrReadOnly
@@ -15,12 +15,12 @@ class PinListView(generics.ListCreateAPIView):
     serializer_class = PinSerializer
     queryset = Pin.objects.all().order_by('-timestamp')
 
-    # filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend]
 
-    # filterset_fields = [
-    #     'post',
-    #     'owner__profile'
-    # ]
+    filterset_fields = [
+        'post',
+        'owner__profile'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

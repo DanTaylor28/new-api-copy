@@ -1,6 +1,6 @@
 from django.shortcuts import render
-# from django_filters.rest_framework import DjangoFilterBackend
-# from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
 from .models import Comment
 from .serializers import CommentSerializer, CommentDetailSerializer
 from drf_api.permissions import IsOwnerOrReadOnly
@@ -14,19 +14,18 @@ class CommentListView(generics.ListCreateAPIView):
     can be filtered and ordered by post, owner and timestamp.
     """
     serializer_class = CommentSerializer
-    # queryset = Comment.objects.annotate(
-    #     num_of_comment_likes=Count('comment_likes', distinct=True)
-    # ).order_by('-timestamp')
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.annotate(
+        num_of_comment_likes=Count('comment_likes', distinct=True)
+    ).order_by('-timestamp')
 
-    # filter_backends = [
-    #     DjangoFilterBackend,
-    #     filters.OrderingFilter
-    # ]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter
+    ]
 
-    # filterset_fields = ['post', 'owner']
+    filterset_fields = ['post', 'owner']
 
-    # ordering_fields = ['timestamp']
+    ordering_fields = ['timestamp']
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -39,7 +38,6 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = CommentDetailSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    # queryset = Comment.objects.annotate(
-    #     num_of_comment_likes=Count('comment_likes', distinct=True)
-    # ).order_by('-timestamp')
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.annotate(
+        num_of_comment_likes=Count('comment_likes', distinct=True)
+    ).order_by('-timestamp')

@@ -18,7 +18,7 @@ class CommentSerializer(serializers.ModelSerializer):
     is_comment_owner = serializers.SerializerMethodField()
     timestamp = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
-    # num_of_comment_likes = serializers.ReadOnlyField()
+    num_of_comment_likes = serializers.ReadOnlyField()
 
     def get_is_comment_owner(self, obj):
         request = self.context['request']
@@ -33,7 +33,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
-            'id', 'post', 'post_title', 'text',  # 'num_of_comment_likes',
+            'id', 'post', 'post_title', 'text', 'num_of_comment_likes',
             'owner', 'is_comment_owner', 'timestamp', 'updated_at',
             'profile_id', 'profile_image'
         ]
